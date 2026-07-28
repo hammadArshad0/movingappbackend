@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7826be452afb4eaca3f1cc1d50e89595" Name="Diagram1">
+        <EntityTypeShape EntityType="MovingRelocationDBModel.AuditLog" Width="1.5" PointX="7.5" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Branch" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Company" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Crew" Width="1.5" PointX="3" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Customer" Width="1.5" PointX="3" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Document" Width="1.5" PointX="20.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Driver" Width="1.5" PointX="7.5" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.InventoryItem" Width="1.5" PointX="15" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Invoice" Width="1.5" PointX="20.25" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Lead" Width="1.5" PointX="10.5" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.LeadStatus" Width="1.5" PointX="8.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.MoveAssignment" Width="1.5" PointX="9.75" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Move" Width="1.5" PointX="18" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.MoveStatusHistory" Width="1.5" PointX="23.25" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Payment" Width="1.5" PointX="22.5" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Permission" Width="1.5" PointX="0.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.QuoteHistory" Width="1.5" PointX="15" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Quote" Width="1.5" PointX="12.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.RefreshToken" Width="1.5" PointX="7.5" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Refund" Width="1.5" PointX="24.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Role" Width="1.5" PointX="3" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Room" Width="1.5" PointX="12.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.SurveyPhoto" Width="1.5" PointX="15" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Survey" Width="1.5" PointX="12.75" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.User" Width="1.5" PointX="5.25" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovingRelocationDBModel.Vehicle" Width="1.5" PointX="3" PointY="25.125" IsExpanded="true" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__AuditLogs__UserI__30C33EC3" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Branches__Compan__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Branches__Parent__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Users__BranchId__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Crews__CompanyId__160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Customers__Compa__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Users__CompanyId__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Vehicles__Compan__10566F31" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveAssig__CrewI__1F98B2C1" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Leads__CustomerI__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Moves__CustomerI__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Documents__MoveI__236943A5" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Drivers__UserId__1332DBDC" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveAssig__Drive__1EA48E88" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Inventory__RoomI__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Inventory__Surve__7B5B524B" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Invoices__MoveId__2739D489" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Payments__Invoic__2A164134" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Leads__AssignedS__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Leads__StatusId__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Quotes__LeadId__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Surveys__LeadId__73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveAssig__MoveI__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveAssig__Vehic__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Moves__QuoteId__06CD04F7" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveStatu__MoveI__0B91BA14" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__MoveStatu__Chang__0C85DE4D" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Refunds__Payment__2CF2ADDF" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__QuoteHist__Quote__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Quotes__Approved__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__RefreshTo__UserI__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__Users__RoleId__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.FK__SurveyPho__Surve__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.CrewMembers" ManuallyRouted="false" />
+        <AssociationConnector Association="MovingRelocationDBModel.RolePermissions" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

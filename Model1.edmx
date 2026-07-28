@@ -1,0 +1,2183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MovingRelocationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="TableName" Type="varchar" MaxLength="100" />
+          <Property Name="ActionType" Type="varchar" MaxLength="50" />
+          <Property Name="OldValues" Type="nvarchar(max)" />
+          <Property Name="NewValues" Type="nvarchar(max)" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="ParentBranchId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Currency" Type="varchar" MaxLength="10" />
+          <Property Name="Theme" Type="varchar" MaxLength="50" />
+          <Property Name="UnitSystem" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="CrewMembers">
+          <Key>
+            <PropertyRef Name="CrewId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="CrewId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Crews">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MoveId" Type="int" />
+          <Property Name="FileName" Type="varchar" MaxLength="300" />
+          <Property Name="FilePath" Type="nvarchar(max)" />
+          <Property Name="FileType" Type="varchar" MaxLength="50" />
+          <Property Name="UploadedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Drivers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="LicenseNumber" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="InventoryItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" />
+          <Property Name="ItemName" Type="varchar" MaxLength="200" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Weight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Volume" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Barcode" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Invoices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MoveId" Type="int" />
+          <Property Name="InvoiceNumber" Type="varchar" MaxLength="100" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Leads">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="AssignedSalesPersonId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="Source" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LeadStatuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="MoveAssignments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MoveId" Type="int" />
+          <Property Name="VehicleId" Type="int" />
+          <Property Name="DriverId" Type="int" />
+          <Property Name="CrewId" Type="int" />
+        </EntityType>
+        <EntityType Name="Moves">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuoteId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="OriginAddress" Type="nvarchar(max)" />
+          <Property Name="DestinationAddress" Type="nvarchar(max)" />
+          <Property Name="MoveType" Type="varchar" MaxLength="100" />
+          <Property Name="TransportType" Type="varchar" MaxLength="100" />
+          <Property Name="PlannedStartDate" Type="datetime" />
+          <Property Name="PlannedEndDate" Type="datetime" />
+          <Property Name="ActualStartDate" Type="datetime" />
+          <Property Name="ActualEndDate" Type="datetime" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MoveStatusHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MoveId" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="100" />
+          <Property Name="ChangedBy" Type="int" />
+          <Property Name="CreatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="int" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="PaymentMethod" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuoteHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuoteId" Type="int" />
+          <Property Name="VersionNo" Type="int" />
+          <Property Name="QuoteData" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Quotes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeadId" Type="int" Nullable="false" />
+          <Property Name="VersionNo" Type="int" />
+          <Property Name="SubTotal" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="ApprovedBy" Type="int" />
+          <Property Name="ApprovedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RefreshTokens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Token" Type="nvarchar" MaxLength="500" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="IsRevoked" Type="bit" />
+        </EntityType>
+        <EntityType Name="Refunds">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentId" Type="int" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RolePermissions">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="PermissionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="SurveyPhotos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Surveys">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeadId" Type="int" Nullable="false" />
+          <Property Name="ScheduledDate" Type="datetime" />
+          <Property Name="TotalWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalVolume" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BranchId" Type="int" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="VehicleNumber" Type="varchar" MaxLength="100" />
+          <Property Name="CapacityWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CapacityVolume" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__AuditLogs__UserI__30C33EC3">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Branches__Compan__4E88ABD4">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Branches__Parent__4F7CD00D">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Branches1" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Branches1">
+              <PropertyRef Name="ParentBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CrewMembe__CrewI__18EBB532">
+          <End Role="Crews" Type="Self.Crews" Multiplicity="1" />
+          <End Role="CrewMembers" Type="Self.CrewMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crews">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CrewMembers">
+              <PropertyRef Name="CrewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CrewMembe__UserI__19DFD96B">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="CrewMembers" Type="Self.CrewMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CrewMembers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Crews__CompanyId__160F4887">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="Crews" Type="Self.Crews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Crews">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Compa__68487DD7">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Documents__MoveI__236943A5">
+          <End Role="Moves" Type="Self.Moves" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Drivers__UserId__1332DBDC">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Drivers" Type="Self.Drivers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drivers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Inventory__RoomI__7C4F7684">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="0..1" />
+          <End Role="InventoryItems" Type="Self.InventoryItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventoryItems">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Inventory__Surve__7B5B524B">
+          <End Role="Surveys" Type="Self.Surveys" Multiplicity="1" />
+          <End Role="InventoryItems" Type="Self.InventoryItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Surveys">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventoryItems">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoices__MoveId__2739D489">
+          <End Role="Moves" Type="Self.Moves" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__AssignedS__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Leads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="AssignedSalesPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__CustomerI__6EF57B66">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Leads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__StatusId__6FE99F9F">
+          <End Role="LeadStatuses" Type="Self.LeadStatuses" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Leads" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeadStatuses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__CrewI__1F98B2C1">
+          <End Role="Crews" Type="Self.Crews" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crews">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="CrewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__Drive__1EA48E88">
+          <End Role="Drivers" Type="Self.Drivers" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__MoveI__1CBC4616">
+          <End Role="Moves" Type="Self.Moves" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__Vehic__1DB06A4F">
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__CustomerI__07C12930">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__QuoteId__06CD04F7">
+          <End Role="Quotes" Type="Self.Quotes" Multiplicity="1" />
+          <End Role="Moves" Type="Self.Moves" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quotes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="QuoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveStatu__Chang__0C85DE4D">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="MoveStatusHistory" Type="Self.MoveStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveStatusHistory">
+              <PropertyRef Name="ChangedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveStatu__MoveI__0B91BA14">
+          <End Role="Moves" Type="Self.Moves" Multiplicity="0..1" />
+          <End Role="MoveStatusHistory" Type="Self.MoveStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveStatusHistory">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payments__Invoic__2A164134">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuoteHist__Quote__03F0984C">
+          <End Role="Quotes" Type="Self.Quotes" Multiplicity="0..1" />
+          <End Role="QuoteHistory" Type="Self.QuoteHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quotes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuoteHistory">
+              <PropertyRef Name="QuoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Quotes__Approved__01142BA1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Quotes" Type="Self.Quotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quotes">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Quotes__LeadId__00200768">
+          <End Role="Leads" Type="Self.Leads" Multiplicity="1" />
+          <End Role="Quotes" Type="Self.Quotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quotes">
+              <PropertyRef Name="LeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RefreshTo__UserI__656C112C">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RefreshTokens" Type="Self.RefreshTokens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RefreshTokens">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Refunds__Payment__2CF2ADDF">
+          <End Role="Payments" Type="Self.Payments" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refunds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolePermi__Permi__5812160E">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1" />
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolePermi__RoleI__571DF1D5">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyPho__Surve__76969D2E">
+          <End Role="Surveys" Type="Self.Surveys" Multiplicity="1" />
+          <End Role="SurveyPhotos" Type="Self.SurveyPhotos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Surveys">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SurveyPhotos">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Surveys__LeadId__73BA3083">
+          <End Role="Leads" Type="Self.Leads" Multiplicity="1" />
+          <End Role="Surveys" Type="Self.Surveys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Surveys">
+              <PropertyRef Name="LeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__BranchId__5EBF139D">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__CompanyId__5DCAEF64">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleId__5FB337D6">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vehicles__Compan__10566F31">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MovingRelocationDBModelStoreContainer">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CrewMembers" EntityType="Self.CrewMembers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Crews" EntityType="Self.Crews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Documents" EntityType="Self.Documents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Drivers" EntityType="Self.Drivers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InventoryItems" EntityType="Self.InventoryItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Leads" EntityType="Self.Leads" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeadStatuses" EntityType="Self.LeadStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MoveAssignments" EntityType="Self.MoveAssignments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Moves" EntityType="Self.Moves" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MoveStatusHistory" EntityType="Self.MoveStatusHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuoteHistory" EntityType="Self.QuoteHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quotes" EntityType="Self.Quotes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RefreshTokens" EntityType="Self.RefreshTokens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refunds" EntityType="Self.Refunds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SurveyPhotos" EntityType="Self.SurveyPhotos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Surveys" EntityType="Self.Surveys" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AuditLogs__UserI__30C33EC3" Association="Self.FK__AuditLogs__UserI__30C33EC3">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Branches__Compan__4E88ABD4" Association="Self.FK__Branches__Compan__4E88ABD4">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Branches__Parent__4F7CD00D" Association="Self.FK__Branches__Parent__4F7CD00D">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Branches1" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CrewMembe__CrewI__18EBB532" Association="Self.FK__CrewMembe__CrewI__18EBB532">
+            <End Role="Crews" EntitySet="Crews" />
+            <End Role="CrewMembers" EntitySet="CrewMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CrewMembe__UserI__19DFD96B" Association="Self.FK__CrewMembe__UserI__19DFD96B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CrewMembers" EntitySet="CrewMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Crews__CompanyId__160F4887" Association="Self.FK__Crews__CompanyId__160F4887">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Crews" EntitySet="Crews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Compa__68487DD7" Association="Self.FK__Customers__Compa__68487DD7">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Documents__MoveI__236943A5" Association="Self.FK__Documents__MoveI__236943A5">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Drivers__UserId__1332DBDC" Association="Self.FK__Drivers__UserId__1332DBDC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Drivers" EntitySet="Drivers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Inventory__RoomI__7C4F7684" Association="Self.FK__Inventory__RoomI__7C4F7684">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="InventoryItems" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Inventory__Surve__7B5B524B" Association="Self.FK__Inventory__Surve__7B5B524B">
+            <End Role="Surveys" EntitySet="Surveys" />
+            <End Role="InventoryItems" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoices__MoveId__2739D489" Association="Self.FK__Invoices__MoveId__2739D489">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__AssignedS__70DDC3D8" Association="Self.FK__Leads__AssignedS__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__CustomerI__6EF57B66" Association="Self.FK__Leads__CustomerI__6EF57B66">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__StatusId__6FE99F9F" Association="Self.FK__Leads__StatusId__6FE99F9F">
+            <End Role="LeadStatuses" EntitySet="LeadStatuses" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__CrewI__1F98B2C1" Association="Self.FK__MoveAssig__CrewI__1F98B2C1">
+            <End Role="Crews" EntitySet="Crews" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__Drive__1EA48E88" Association="Self.FK__MoveAssig__Drive__1EA48E88">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__MoveI__1CBC4616" Association="Self.FK__MoveAssig__MoveI__1CBC4616">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__Vehic__1DB06A4F" Association="Self.FK__MoveAssig__Vehic__1DB06A4F">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__CustomerI__07C12930" Association="Self.FK__Moves__CustomerI__07C12930">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__QuoteId__06CD04F7" Association="Self.FK__Moves__QuoteId__06CD04F7">
+            <End Role="Quotes" EntitySet="Quotes" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveStatu__Chang__0C85DE4D" Association="Self.FK__MoveStatu__Chang__0C85DE4D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MoveStatusHistory" EntitySet="MoveStatusHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveStatu__MoveI__0B91BA14" Association="Self.FK__MoveStatu__MoveI__0B91BA14">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="MoveStatusHistory" EntitySet="MoveStatusHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payments__Invoic__2A164134" Association="Self.FK__Payments__Invoic__2A164134">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuoteHist__Quote__03F0984C" Association="Self.FK__QuoteHist__Quote__03F0984C">
+            <End Role="Quotes" EntitySet="Quotes" />
+            <End Role="QuoteHistory" EntitySet="QuoteHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Quotes__Approved__01142BA1" Association="Self.FK__Quotes__Approved__01142BA1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Quotes" EntitySet="Quotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Quotes__LeadId__00200768" Association="Self.FK__Quotes__LeadId__00200768">
+            <End Role="Leads" EntitySet="Leads" />
+            <End Role="Quotes" EntitySet="Quotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RefreshTo__UserI__656C112C" Association="Self.FK__RefreshTo__UserI__656C112C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RefreshTokens" EntitySet="RefreshTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Refunds__Payment__2CF2ADDF" Association="Self.FK__Refunds__Payment__2CF2ADDF">
+            <End Role="Payments" EntitySet="Payments" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolePermi__Permi__5812160E" Association="Self.FK__RolePermi__Permi__5812160E">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolePermi__RoleI__571DF1D5" Association="Self.FK__RolePermi__RoleI__571DF1D5">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyPho__Surve__76969D2E" Association="Self.FK__SurveyPho__Surve__76969D2E">
+            <End Role="Surveys" EntitySet="Surveys" />
+            <End Role="SurveyPhotos" EntitySet="SurveyPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Surveys__LeadId__73BA3083" Association="Self.FK__Surveys__LeadId__73BA3083">
+            <End Role="Leads" EntitySet="Leads" />
+            <End Role="Surveys" EntitySet="Surveys" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__BranchId__5EBF139D" Association="Self.FK__Users__BranchId__5EBF139D">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__CompanyId__5DCAEF64" Association="Self.FK__Users__CompanyId__5DCAEF64">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleId__5FB337D6" Association="Self.FK__Users__RoleId__5FB337D6">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vehicles__Compan__10566F31" Association="Self.FK__Vehicles__Compan__10566F31">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MovingRelocationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="TableName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ActionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OldValues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NewValues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK__AuditLogs__UserI__30C33EC3" FromRole="AuditLogs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="ParentBranchId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Branches__Compan__4E88ABD4" FromRole="Branches" ToRole="Companies" />
+          <NavigationProperty Name="Branches1" Relationship="Self.FK__Branches__Parent__4F7CD00D" FromRole="Branches" ToRole="Branches1" />
+          <NavigationProperty Name="Branch1" Relationship="Self.FK__Branches__Parent__4F7CD00D" FromRole="Branches1" ToRole="Branches" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__BranchId__5EBF139D" FromRole="Branches" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Theme" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UnitSystem" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Branches" Relationship="Self.FK__Branches__Compan__4E88ABD4" FromRole="Companies" ToRole="Branches" />
+          <NavigationProperty Name="Crews" Relationship="Self.FK__Crews__CompanyId__160F4887" FromRole="Companies" ToRole="Crews" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Customers__Compa__68487DD7" FromRole="Companies" ToRole="Customers" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__CompanyId__5DCAEF64" FromRole="Companies" ToRole="Users" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK__Vehicles__Compan__10566F31" FromRole="Companies" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="Crew">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Crews__CompanyId__160F4887" FromRole="Crews" ToRole="Companies" />
+          <NavigationProperty Name="MoveAssignments" Relationship="Self.FK__MoveAssig__CrewI__1F98B2C1" FromRole="Crews" ToRole="MoveAssignments" />
+          <NavigationProperty Name="Users" Relationship="Self.CrewMembers" FromRole="Crews" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Customers__Compa__68487DD7" FromRole="Customers" ToRole="Companies" />
+          <NavigationProperty Name="Leads" Relationship="Self.FK__Leads__CustomerI__6EF57B66" FromRole="Customers" ToRole="Leads" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK__Moves__CustomerI__07C12930" FromRole="Customers" ToRole="Moves" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MoveId" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UploadedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Move" Relationship="Self.FK__Documents__MoveI__236943A5" FromRole="Documents" ToRole="Moves" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="LicenseNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Drivers__UserId__1332DBDC" FromRole="Drivers" ToRole="Users" />
+          <NavigationProperty Name="MoveAssignments" Relationship="Self.FK__MoveAssig__Drive__1EA48E88" FromRole="Drivers" ToRole="MoveAssignments" />
+        </EntityType>
+        <EntityType Name="InventoryItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" />
+          <Property Name="ItemName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Weight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Volume" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Barcode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Room" Relationship="Self.FK__Inventory__RoomI__7C4F7684" FromRole="InventoryItems" ToRole="Rooms" />
+          <NavigationProperty Name="Survey" Relationship="Self.FK__Inventory__Surve__7B5B524B" FromRole="InventoryItems" ToRole="Surveys" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MoveId" Type="Int32" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Move" Relationship="Self.FK__Invoices__MoveId__2739D489" FromRole="Invoices" ToRole="Moves" />
+          <NavigationProperty Name="Payments" Relationship="Self.FK__Payments__Invoic__2A164134" FromRole="Invoices" ToRole="Payments" />
+        </EntityType>
+        <EntityType Name="Lead">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="AssignedSalesPersonId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Leads__CustomerI__6EF57B66" FromRole="Leads" ToRole="Customers" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Leads__AssignedS__70DDC3D8" FromRole="Leads" ToRole="Users" />
+          <NavigationProperty Name="LeadStatus" Relationship="Self.FK__Leads__StatusId__6FE99F9F" FromRole="Leads" ToRole="LeadStatuses" />
+          <NavigationProperty Name="Quotes" Relationship="Self.FK__Quotes__LeadId__00200768" FromRole="Leads" ToRole="Quotes" />
+          <NavigationProperty Name="Surveys" Relationship="Self.FK__Surveys__LeadId__73BA3083" FromRole="Leads" ToRole="Surveys" />
+        </EntityType>
+        <EntityType Name="LeadStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Leads" Relationship="Self.FK__Leads__StatusId__6FE99F9F" FromRole="LeadStatuses" ToRole="Leads" />
+        </EntityType>
+        <EntityType Name="MoveAssignment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MoveId" Type="Int32" />
+          <Property Name="VehicleId" Type="Int32" />
+          <Property Name="DriverId" Type="Int32" />
+          <Property Name="CrewId" Type="Int32" />
+          <NavigationProperty Name="Crew" Relationship="Self.FK__MoveAssig__CrewI__1F98B2C1" FromRole="MoveAssignments" ToRole="Crews" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK__MoveAssig__Drive__1EA48E88" FromRole="MoveAssignments" ToRole="Drivers" />
+          <NavigationProperty Name="Move" Relationship="Self.FK__MoveAssig__MoveI__1CBC4616" FromRole="MoveAssignments" ToRole="Moves" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK__MoveAssig__Vehic__1DB06A4F" FromRole="MoveAssignments" ToRole="Vehicles" />
+        </EntityType>
+        <EntityType Name="Move">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="OriginAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DestinationAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MoveType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TransportType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PlannedStartDate" Type="DateTime" Precision="3" />
+          <Property Name="PlannedEndDate" Type="DateTime" Precision="3" />
+          <Property Name="ActualStartDate" Type="DateTime" Precision="3" />
+          <Property Name="ActualEndDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Moves__CustomerI__07C12930" FromRole="Moves" ToRole="Customers" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK__Documents__MoveI__236943A5" FromRole="Moves" ToRole="Documents" />
+          <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoices__MoveId__2739D489" FromRole="Moves" ToRole="Invoices" />
+          <NavigationProperty Name="MoveAssignments" Relationship="Self.FK__MoveAssig__MoveI__1CBC4616" FromRole="Moves" ToRole="MoveAssignments" />
+          <NavigationProperty Name="Quote" Relationship="Self.FK__Moves__QuoteId__06CD04F7" FromRole="Moves" ToRole="Quotes" />
+          <NavigationProperty Name="MoveStatusHistories" Relationship="Self.FK__MoveStatu__MoveI__0B91BA14" FromRole="Moves" ToRole="MoveStatusHistory" />
+        </EntityType>
+        <EntityType Name="MoveStatusHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MoveId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ChangedBy" Type="Int32" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Move" Relationship="Self.FK__MoveStatu__MoveI__0B91BA14" FromRole="MoveStatusHistory" ToRole="Moves" />
+          <NavigationProperty Name="User" Relationship="Self.FK__MoveStatu__Chang__0C85DE4D" FromRole="MoveStatusHistory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Invoice" Relationship="Self.FK__Payments__Invoic__2A164134" FromRole="Payments" ToRole="Invoices" />
+          <NavigationProperty Name="Refunds" Relationship="Self.FK__Refunds__Payment__2CF2ADDF" FromRole="Payments" ToRole="Refunds" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.RolePermissions" FromRole="Permissions" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="QuoteHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuoteId" Type="Int32" />
+          <Property Name="VersionNo" Type="Int32" />
+          <Property Name="QuoteData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Quote" Relationship="Self.FK__QuoteHist__Quote__03F0984C" FromRole="QuoteHistory" ToRole="Quotes" />
+        </EntityType>
+        <EntityType Name="Quote">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeadId" Type="Int32" Nullable="false" />
+          <Property Name="VersionNo" Type="Int32" />
+          <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApprovedBy" Type="Int32" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Lead" Relationship="Self.FK__Quotes__LeadId__00200768" FromRole="Quotes" ToRole="Leads" />
+          <NavigationProperty Name="Moves" Relationship="Self.FK__Moves__QuoteId__06CD04F7" FromRole="Quotes" ToRole="Moves" />
+          <NavigationProperty Name="QuoteHistories" Relationship="Self.FK__QuoteHist__Quote__03F0984C" FromRole="Quotes" ToRole="QuoteHistory" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Quotes__Approved__01142BA1" FromRole="Quotes" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="RefreshToken">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="IsRevoked" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="Self.FK__RefreshTo__UserI__656C112C" FromRole="RefreshTokens" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Refund">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentId" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK__Refunds__Payment__2CF2ADDF" FromRole="Refunds" ToRole="Payments" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleId__5FB337D6" FromRole="Roles" ToRole="Users" />
+          <NavigationProperty Name="Permissions" Relationship="Self.RolePermissions" FromRole="Roles" ToRole="Permissions" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InventoryItems" Relationship="Self.FK__Inventory__RoomI__7C4F7684" FromRole="Rooms" ToRole="InventoryItems" />
+        </EntityType>
+        <EntityType Name="SurveyPhoto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Survey" Relationship="Self.FK__SurveyPho__Surve__76969D2E" FromRole="SurveyPhotos" ToRole="Surveys" />
+        </EntityType>
+        <EntityType Name="Survey">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeadId" Type="Int32" Nullable="false" />
+          <Property Name="ScheduledDate" Type="DateTime" Precision="3" />
+          <Property Name="TotalWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalVolume" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="InventoryItems" Relationship="Self.FK__Inventory__Surve__7B5B524B" FromRole="Surveys" ToRole="InventoryItems" />
+          <NavigationProperty Name="Lead" Relationship="Self.FK__Surveys__LeadId__73BA3083" FromRole="Surveys" ToRole="Leads" />
+          <NavigationProperty Name="SurveyPhotos" Relationship="Self.FK__SurveyPho__Surve__76969D2E" FromRole="Surveys" ToRole="SurveyPhotos" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="BranchId" Type="Int32" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="AuditLogs" Relationship="Self.FK__AuditLogs__UserI__30C33EC3" FromRole="Users" ToRole="AuditLogs" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK__Users__BranchId__5EBF139D" FromRole="Users" ToRole="Branches" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Users__CompanyId__5DCAEF64" FromRole="Users" ToRole="Companies" />
+          <NavigationProperty Name="Drivers" Relationship="Self.FK__Drivers__UserId__1332DBDC" FromRole="Users" ToRole="Drivers" />
+          <NavigationProperty Name="Leads" Relationship="Self.FK__Leads__AssignedS__70DDC3D8" FromRole="Users" ToRole="Leads" />
+          <NavigationProperty Name="MoveStatusHistories" Relationship="Self.FK__MoveStatu__Chang__0C85DE4D" FromRole="Users" ToRole="MoveStatusHistory" />
+          <NavigationProperty Name="Quotes" Relationship="Self.FK__Quotes__Approved__01142BA1" FromRole="Users" ToRole="Quotes" />
+          <NavigationProperty Name="RefreshTokens" Relationship="Self.FK__RefreshTo__UserI__656C112C" FromRole="Users" ToRole="RefreshTokens" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleId__5FB337D6" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Crews" Relationship="Self.CrewMembers" FromRole="Users" ToRole="Crews" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="VehicleNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CapacityWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CapacityVolume" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Vehicles__Compan__10566F31" FromRole="Vehicles" ToRole="Companies" />
+          <NavigationProperty Name="MoveAssignments" Relationship="Self.FK__MoveAssig__Vehic__1DB06A4F" FromRole="Vehicles" ToRole="MoveAssignments" />
+        </EntityType>
+        <Association Name="FK__AuditLogs__UserI__30C33EC3">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Branches__Compan__4E88ABD4">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="Branches" Type="Self.Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Branches__Parent__4F7CD00D">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="Branches1" Type="Self.Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Branches1">
+              <PropertyRef Name="ParentBranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__BranchId__5EBF139D">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Crews__CompanyId__160F4887">
+          <End Role="Companies" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Crews" Type="Self.Crew" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Crews">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customers__Compa__68487DD7">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__CompanyId__5DCAEF64">
+          <End Role="Companies" Type="Self.Company" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Vehicles__Compan__10566F31">
+          <End Role="Companies" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__CrewI__1F98B2C1">
+          <End Role="Crews" Type="Self.Crew" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crews">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="CrewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__CustomerI__6EF57B66">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__CustomerI__07C12930">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Moves" Type="Self.Move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Documents__MoveI__236943A5">
+          <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Drivers__UserId__1332DBDC">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Drivers" Type="Self.Driver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drivers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__Drive__1EA48E88">
+          <End Role="Drivers" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="DriverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Inventory__RoomI__7C4F7684">
+          <End Role="Rooms" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="InventoryItems" Type="Self.InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventoryItems">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Inventory__Surve__7B5B524B">
+          <End Role="Surveys" Type="Self.Survey" Multiplicity="1" />
+          <End Role="InventoryItems" Type="Self.InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Surveys">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InventoryItems">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Invoices__MoveId__2739D489">
+          <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payments__Invoic__2A164134">
+          <End Role="Invoices" Type="Self.Invoice" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__AssignedS__70DDC3D8">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="AssignedSalesPersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Leads__StatusId__6FE99F9F">
+          <End Role="LeadStatuses" Type="Self.LeadStatus" Multiplicity="0..1" />
+          <End Role="Leads" Type="Self.Lead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeadStatuses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Leads">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Quotes__LeadId__00200768">
+          <End Role="Leads" Type="Self.Lead" Multiplicity="1" />
+          <End Role="Quotes" Type="Self.Quote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quotes">
+              <PropertyRef Name="LeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Surveys__LeadId__73BA3083">
+          <End Role="Leads" Type="Self.Lead" Multiplicity="1" />
+          <End Role="Surveys" Type="Self.Survey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Leads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Surveys">
+              <PropertyRef Name="LeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__MoveI__1CBC4616">
+          <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveAssig__Vehic__1DB06A4F">
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="MoveAssignments" Type="Self.MoveAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveAssignments">
+              <PropertyRef Name="VehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Moves__QuoteId__06CD04F7">
+          <End Role="Quotes" Type="Self.Quote" Multiplicity="1" />
+          <End Role="Moves" Type="Self.Move" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quotes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Moves">
+              <PropertyRef Name="QuoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveStatu__MoveI__0B91BA14">
+          <End Role="Moves" Type="Self.Move" Multiplicity="0..1" />
+          <End Role="MoveStatusHistory" Type="Self.MoveStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Moves">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveStatusHistory">
+              <PropertyRef Name="MoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoveStatu__Chang__0C85DE4D">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="MoveStatusHistory" Type="Self.MoveStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoveStatusHistory">
+              <PropertyRef Name="ChangedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Refunds__Payment__2CF2ADDF">
+          <End Role="Payments" Type="Self.Payment" Multiplicity="0..1" />
+          <End Role="Refunds" Type="Self.Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Refunds">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuoteHist__Quote__03F0984C">
+          <End Role="Quotes" Type="Self.Quote" Multiplicity="0..1" />
+          <End Role="QuoteHistory" Type="Self.QuoteHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quotes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuoteHistory">
+              <PropertyRef Name="QuoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Quotes__Approved__01142BA1">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Quotes" Type="Self.Quote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Quotes">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RefreshTo__UserI__656C112C">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="RefreshTokens" Type="Self.RefreshToken" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RefreshTokens">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleId__5FB337D6">
+          <End Role="Roles" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyPho__Surve__76969D2E">
+          <End Role="Surveys" Type="Self.Survey" Multiplicity="1" />
+          <End Role="SurveyPhotos" Type="Self.SurveyPhoto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Surveys">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SurveyPhotos">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CrewMembers">
+          <End Role="Crews" Type="Self.Crew" Multiplicity="*" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <Association Name="RolePermissions">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="*" />
+          <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="MovingRelocationDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLog" />
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Crews" EntityType="Self.Crew" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Documents" EntityType="Self.Document" />
+          <EntitySet Name="Drivers" EntityType="Self.Driver" />
+          <EntitySet Name="InventoryItems" EntityType="Self.InventoryItem" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoice" />
+          <EntitySet Name="Leads" EntityType="Self.Lead" />
+          <EntitySet Name="LeadStatuses" EntityType="Self.LeadStatus" />
+          <EntitySet Name="MoveAssignments" EntityType="Self.MoveAssignment" />
+          <EntitySet Name="Moves" EntityType="Self.Move" />
+          <EntitySet Name="MoveStatusHistories" EntityType="Self.MoveStatusHistory" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="QuoteHistories" EntityType="Self.QuoteHistory" />
+          <EntitySet Name="Quotes" EntityType="Self.Quote" />
+          <EntitySet Name="RefreshTokens" EntityType="Self.RefreshToken" />
+          <EntitySet Name="Refunds" EntityType="Self.Refund" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="SurveyPhotos" EntityType="Self.SurveyPhoto" />
+          <EntitySet Name="Surveys" EntityType="Self.Survey" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
+          <AssociationSet Name="FK__AuditLogs__UserI__30C33EC3" Association="Self.FK__AuditLogs__UserI__30C33EC3">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Branches__Compan__4E88ABD4" Association="Self.FK__Branches__Compan__4E88ABD4">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Branches__Parent__4F7CD00D" Association="Self.FK__Branches__Parent__4F7CD00D">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Branches1" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__BranchId__5EBF139D" Association="Self.FK__Users__BranchId__5EBF139D">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Crews__CompanyId__160F4887" Association="Self.FK__Crews__CompanyId__160F4887">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Crews" EntitySet="Crews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customers__Compa__68487DD7" Association="Self.FK__Customers__Compa__68487DD7">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__CompanyId__5DCAEF64" Association="Self.FK__Users__CompanyId__5DCAEF64">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Vehicles__Compan__10566F31" Association="Self.FK__Vehicles__Compan__10566F31">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__CrewI__1F98B2C1" Association="Self.FK__MoveAssig__CrewI__1F98B2C1">
+            <End Role="Crews" EntitySet="Crews" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__CustomerI__6EF57B66" Association="Self.FK__Leads__CustomerI__6EF57B66">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__CustomerI__07C12930" Association="Self.FK__Moves__CustomerI__07C12930">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Documents__MoveI__236943A5" Association="Self.FK__Documents__MoveI__236943A5">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Drivers__UserId__1332DBDC" Association="Self.FK__Drivers__UserId__1332DBDC">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Drivers" EntitySet="Drivers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__Drive__1EA48E88" Association="Self.FK__MoveAssig__Drive__1EA48E88">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Inventory__RoomI__7C4F7684" Association="Self.FK__Inventory__RoomI__7C4F7684">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="InventoryItems" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Inventory__Surve__7B5B524B" Association="Self.FK__Inventory__Surve__7B5B524B">
+            <End Role="Surveys" EntitySet="Surveys" />
+            <End Role="InventoryItems" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Invoices__MoveId__2739D489" Association="Self.FK__Invoices__MoveId__2739D489">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payments__Invoic__2A164134" Association="Self.FK__Payments__Invoic__2A164134">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__AssignedS__70DDC3D8" Association="Self.FK__Leads__AssignedS__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Leads__StatusId__6FE99F9F" Association="Self.FK__Leads__StatusId__6FE99F9F">
+            <End Role="LeadStatuses" EntitySet="LeadStatuses" />
+            <End Role="Leads" EntitySet="Leads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Quotes__LeadId__00200768" Association="Self.FK__Quotes__LeadId__00200768">
+            <End Role="Leads" EntitySet="Leads" />
+            <End Role="Quotes" EntitySet="Quotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Surveys__LeadId__73BA3083" Association="Self.FK__Surveys__LeadId__73BA3083">
+            <End Role="Leads" EntitySet="Leads" />
+            <End Role="Surveys" EntitySet="Surveys" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__MoveI__1CBC4616" Association="Self.FK__MoveAssig__MoveI__1CBC4616">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveAssig__Vehic__1DB06A4F" Association="Self.FK__MoveAssig__Vehic__1DB06A4F">
+            <End Role="Vehicles" EntitySet="Vehicles" />
+            <End Role="MoveAssignments" EntitySet="MoveAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Moves__QuoteId__06CD04F7" Association="Self.FK__Moves__QuoteId__06CD04F7">
+            <End Role="Quotes" EntitySet="Quotes" />
+            <End Role="Moves" EntitySet="Moves" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveStatu__MoveI__0B91BA14" Association="Self.FK__MoveStatu__MoveI__0B91BA14">
+            <End Role="Moves" EntitySet="Moves" />
+            <End Role="MoveStatusHistory" EntitySet="MoveStatusHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoveStatu__Chang__0C85DE4D" Association="Self.FK__MoveStatu__Chang__0C85DE4D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MoveStatusHistory" EntitySet="MoveStatusHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Refunds__Payment__2CF2ADDF" Association="Self.FK__Refunds__Payment__2CF2ADDF">
+            <End Role="Payments" EntitySet="Payments" />
+            <End Role="Refunds" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuoteHist__Quote__03F0984C" Association="Self.FK__QuoteHist__Quote__03F0984C">
+            <End Role="Quotes" EntitySet="Quotes" />
+            <End Role="QuoteHistory" EntitySet="QuoteHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Quotes__Approved__01142BA1" Association="Self.FK__Quotes__Approved__01142BA1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Quotes" EntitySet="Quotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RefreshTo__UserI__656C112C" Association="Self.FK__RefreshTo__UserI__656C112C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RefreshTokens" EntitySet="RefreshTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleId__5FB337D6" Association="Self.FK__Users__RoleId__5FB337D6">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyPho__Surve__76969D2E" Association="Self.FK__SurveyPho__Surve__76969D2E">
+            <End Role="Surveys" EntitySet="Surveys" />
+            <End Role="SurveyPhotos" EntitySet="SurveyPhotos" />
+          </AssociationSet>
+          <AssociationSet Name="CrewMembers" Association="Self.CrewMembers">
+            <End Role="Crews" EntitySet="Crews" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="RolePermissions" Association="Self.RolePermissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MovingRelocationDBModelStoreContainer" CdmEntityContainer="MovingRelocationDBEntities">
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.AuditLog">
+              <MappingFragment StoreEntitySet="AuditLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+                <ScalarProperty Name="OldValues" ColumnName="OldValues" />
+                <ScalarProperty Name="NewValues" ColumnName="NewValues" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="ParentBranchId" ColumnName="ParentBranchId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Theme" ColumnName="Theme" />
+                <ScalarProperty Name="UnitSystem" ColumnName="UnitSystem" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Crews">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Crew">
+              <MappingFragment StoreEntitySet="Crews">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Document">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Driver">
+              <MappingFragment StoreEntitySet="Drivers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InventoryItems">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.InventoryItem">
+              <MappingFragment StoreEntitySet="InventoryItems">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leads">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Lead">
+              <MappingFragment StoreEntitySet="Leads">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="AssignedSalesPersonId" ColumnName="AssignedSalesPersonId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeadStatuses">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.LeadStatus">
+              <MappingFragment StoreEntitySet="LeadStatuses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MoveAssignments">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.MoveAssignment">
+              <MappingFragment StoreEntitySet="MoveAssignments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="DriverId" ColumnName="DriverId" />
+                <ScalarProperty Name="CrewId" ColumnName="CrewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Moves">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Move">
+              <MappingFragment StoreEntitySet="Moves">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="OriginAddress" ColumnName="OriginAddress" />
+                <ScalarProperty Name="DestinationAddress" ColumnName="DestinationAddress" />
+                <ScalarProperty Name="MoveType" ColumnName="MoveType" />
+                <ScalarProperty Name="TransportType" ColumnName="TransportType" />
+                <ScalarProperty Name="PlannedStartDate" ColumnName="PlannedStartDate" />
+                <ScalarProperty Name="PlannedEndDate" ColumnName="PlannedEndDate" />
+                <ScalarProperty Name="ActualStartDate" ColumnName="ActualStartDate" />
+                <ScalarProperty Name="ActualEndDate" ColumnName="ActualEndDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MoveStatusHistories">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.MoveStatusHistory">
+              <MappingFragment StoreEntitySet="MoveStatusHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MoveId" ColumnName="MoveId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuoteHistories">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.QuoteHistory">
+              <MappingFragment StoreEntitySet="QuoteHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuoteId" ColumnName="QuoteId" />
+                <ScalarProperty Name="VersionNo" ColumnName="VersionNo" />
+                <ScalarProperty Name="QuoteData" ColumnName="QuoteData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quotes">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Quote">
+              <MappingFragment StoreEntitySet="Quotes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LeadId" ColumnName="LeadId" />
+                <ScalarProperty Name="VersionNo" ColumnName="VersionNo" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefreshTokens">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.RefreshToken">
+              <MappingFragment StoreEntitySet="RefreshTokens">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="IsRevoked" ColumnName="IsRevoked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refunds">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Refund">
+              <MappingFragment StoreEntitySet="Refunds">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Room">
+              <MappingFragment StoreEntitySet="Rooms">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SurveyPhotos">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.SurveyPhoto">
+              <MappingFragment StoreEntitySet="SurveyPhotos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Surveys">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Survey">
+              <MappingFragment StoreEntitySet="Surveys">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LeadId" ColumnName="LeadId" />
+                <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+                <ScalarProperty Name="TotalWeight" ColumnName="TotalWeight" />
+                <ScalarProperty Name="TotalVolume" ColumnName="TotalVolume" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="MovingRelocationDBModel.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
+                <ScalarProperty Name="CapacityWeight" ColumnName="CapacityWeight" />
+                <ScalarProperty Name="CapacityVolume" ColumnName="CapacityVolume" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CrewMembers" TypeName="MovingRelocationDBModel.CrewMembers" StoreEntitySet="CrewMembers">
+            <EndProperty Name="Crews">
+              <ScalarProperty Name="Id" ColumnName="CrewId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RolePermissions" TypeName="MovingRelocationDBModel.RolePermissions" StoreEntitySet="RolePermissions">
+            <EndProperty Name="Permissions">
+              <ScalarProperty Name="Id" ColumnName="PermissionId" />
+            </EndProperty>
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
