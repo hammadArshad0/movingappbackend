@@ -126,6 +126,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -230,13 +231,25 @@
     <Compile Include="Company.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\audit\AuditLogController.cs" />
     <Compile Include="Controllers\Auth\AuthController.cs" />
+    <Compile Include="Controllers\billing\InvoiceController.cs" />
     <Compile Include="Controllers\branch\BranchController.cs" />
     <Compile Include="Controllers\company\CompanyController.cs" />
     <Compile Include="Controllers\customer\CustomerController.cs" />
+    <Compile Include="Controllers\dashboard\DashboardController.cs" />
+    <Compile Include="Controllers\documents\DocumentController.cs" />
+    <Compile Include="Controllers\fleet\CrewController.cs" />
+    <Compile Include="Controllers\fleet\DriverController.cs" />
+    <Compile Include="Controllers\fleet\MoveAssignmentController.cs" />
+    <Compile Include="Controllers\fleet\VehicleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\inventory\InventoryController.cs" />
     <Compile Include="Controllers\lead\LeadController.cs" />
+    <Compile Include="Controllers\move\MoveController.cs" />
+    <Compile Include="Controllers\qoute\QuoteController.cs" />
     <Compile Include="Controllers\Survey\SurveyController.cs" />
+    <Compile Include="Controllers\usermgmt\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Crew.cs">
       <DependentUpon>Model1.tt</DependentUpon>
