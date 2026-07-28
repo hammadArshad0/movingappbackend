@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace task_full_stack.Controllers.survey
@@ -10,6 +12,9 @@ namespace task_full_stack.Controllers.survey
     public class SurveyController : ApiController
     {
         MovingRelocationDBEntities db = new MovingRelocationDBEntities();
+
+        private static readonly string[] AllowedPhotoExtensions =
+            { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
 
         // GET api/Survey?leadId=1
         [HttpGet]
@@ -201,11 +206,12 @@ namespace task_full_stack.Controllers.survey
             }
         }
 
-        // POST api/Survey/5/photo
-        // Photo record add karna (actual file upload alag "FileUpload" controller mein hoga)
+        // POST api/Survey/5/upload-photo
+        // Actual image file upload (multipart/form-data, field name = "file")
+        // Ye woh endpoint hai jo React frontend "/Survey/{id}/upload-photo" pe call karta hai.
         [HttpPost]
-        [Route("api/Survey/{id:int}/photo")]
-        public IHttpActionResult AddPhoto(int id, [FromBody] SurveyPhotoDto model)
+        [Route("api/Survey/{id:int}/upload-photo")]
+        public IHttpActionResult UploadPhoto(int id)
         {
             try
             {
@@ -213,7 +219,72 @@ namespace task_full_stack.Controllers.survey
                 if (survey == null)
                     return NotFound();
 
-                if (string.IsNullOrWhiteSpace(model.FilePath))
+                if (!HttpContext.Current.Request.Files.AllKeys.Contains("file"))
+                    return BadRequest("No file uploaded. Expected form field named 'file'.");
+
+                var file = HttpContext.Current.Request.Files["file"];
+
+                if (file == null || file.ContentLength == 0)
+                    return BadRequest("Uploaded file is empty.");
+
+                var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+                if (!AllowedPhotoExtensions.Contains(extension))
+                    return BadRequest("Only image files (jpg, jpeg, png, gif, webp) are allowed.");
+
+                // 10 MB limit
+                if (file.ContentLength > 10 * 1024 * 1024)
+                    return BadRequest("File size must not exceed 10 MB.");
+
+                var folderPath = HttpContext.Current.Server.MapPath("~/Uploads/SurveyPhotos");
+
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+
+                var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                var fullPath = Path.Combine(folderPath, uniqueFileName);
+
+                file.SaveAs(fullPath);
+
+                var relativePath = $"/Uploads/SurveyPhotos/{uniqueFileName}";
+
+                var photo = new SurveyPhoto
+                {
+                    SurveyId = id,
+                    FilePath = relativePath
+                };
+
+                db.SurveyPhotos.Add(photo);
+                db.SaveChanges();
+
+                return Ok(new
+                {
+                    message = "Photo uploaded successfully.",
+                    id = photo.Id,
+                    filePath = relativePath
+                });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // POST api/Survey/5/photo
+        // Alternate: photo record add karna jab FilePath pehle se maloom ho
+        // (e.g. koi doosra service already file save kar chuka ho)
+        [HttpPost]
+        [Route("api/Survey/{id:int}/photo")]
+        public IHttpActionResult AddPhoto(int id, [FromBody] SurveyPhotoDto model)
+        {
+            try
+            {
+                var survey = db.Surveys.FirstOrDefault(s => s.Id == id);
+
+                if (survey == null)
+                    return NotFound();
+
+                if (model == null || string.IsNullOrWhiteSpace(model.FilePath))
                     return BadRequest("FilePath is required.");
 
                 var photo = new SurveyPhoto
@@ -225,7 +296,11 @@ namespace task_full_stack.Controllers.survey
                 db.SurveyPhotos.Add(photo);
                 db.SaveChanges();
 
-                return Ok(new { message = "Photo added successfully.", id = photo.Id });
+                return Ok(new
+                {
+                    message = "Photo added successfully.",
+                    id = photo.Id
+                });
             }
             catch (Exception ex)
             {
@@ -254,6 +329,15 @@ namespace task_full_stack.Controllers.survey
                 db.InventoryItems.RemoveRange(items);
 
                 var photos = db.SurveyPhotos.Where(p => p.SurveyId == id).ToList();
+
+                // Disk se bhi physical files delete karo
+                foreach (var photo in photos)
+                {
+                    var physicalPath = HttpContext.Current.Server.MapPath("~" + photo.FilePath);
+                    if (File.Exists(physicalPath))
+                        File.Delete(physicalPath);
+                }
+
                 db.SurveyPhotos.RemoveRange(photos);
 
                 db.Surveys.Remove(survey);

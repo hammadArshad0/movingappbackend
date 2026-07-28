@@ -145,7 +145,9 @@ namespace task_full_stack.Controllers.lead
                 if (lead == null)
                     return NotFound();
 
+                lead.CustomerId = model.CustomerId;
                 lead.AssignedSalesPersonId = model.AssignedSalesPersonId;
+                lead.StatusId = model.StatusId;
                 lead.Source = model.Source;
 
                 db.SaveChanges();
@@ -243,6 +245,12 @@ namespace task_full_stack.Controllers.lead
                 return InternalServerError(ex);
             }
         }
+
+        // NOTE: api/LeadStatus is handled by LeadStatusController.
+        // The duplicate [Route("api/LeadStatus")] GetAll() that used to live here
+        // was removed because two controllers exposing the SAME route caused
+        // Web API's route resolver to throw "Multiple actions were found that
+        // match the request" at runtime — that was your "format not matching" error.
     }
 
     public class LeadDto

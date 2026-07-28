@@ -246,6 +246,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\inventory\InventoryController.cs" />
     <Compile Include="Controllers\lead\LeadController.cs" />
+    <Compile Include="Controllers\lead\LeadStatusController.cs" />
     <Compile Include="Controllers\move\MoveController.cs" />
     <Compile Include="Controllers\qoute\QuoteController.cs" />
     <Compile Include="Controllers\Survey\SurveyController.cs" />
