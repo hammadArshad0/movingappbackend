@@ -6,10 +6,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Xml.Linq;
 
 namespace task_full_stack.Controllers.documents
 {
+    [EnableCors(origins: "http://localhost:5173", headers: "*", methods: "*")]
     public class DocumentController : ApiController
     {
         MovingRelocationDBEntities db = new MovingRelocationDBEntities();
@@ -34,7 +36,8 @@ namespace task_full_stack.Controllers.documents
                                        d.FileName,
                                        d.FileType,
                                        d.UploadedDate,
-                                       DownloadUrl = "/api/Document/download/" + d.Id
+                                       // NOTE: "/api" prefix hataya - DataService ka baseURL mein already "api" hai
+                                       DownloadUrl = "/Document/download/" + d.Id
                                    })
                                    .ToList();
 
@@ -135,20 +138,47 @@ namespace task_full_stack.Controllers.documents
 
             if (document == null || !File.Exists(document.FilePath))
             {
-                var notFoundResponse = Request.CreateResponse(HttpStatusCode.NotFound);
-                return notFoundResponse;
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
             var fileBytes = File.ReadAllBytes(document.FilePath);
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new ByteArrayContent(fileBytes);
-            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
-            {
-                FileName = document.FileName
-            };
+
+            // Extension ke hisab se sahi MIME type set karo
+            response.Content.Headers.ContentType =
+                new System.Net.Http.Headers.MediaTypeHeaderValue(GetMimeType(document.FileType));
+
+            response.Content.Headers.ContentDisposition =
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = document.FileName
+                };
+
+            response.Content.Headers.ContentLength = fileBytes.Length;
 
             return response;
+        }
+
+        // Helper: extension se MIME type nikalna
+        private string GetMimeType(string extension)
+        {
+            switch (extension?.ToLower())
+            {
+                case ".pdf":
+                    return "application/pdf";
+                case ".docx":
+                    return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                case ".xlsx":
+                    return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                default:
+                    return "application/octet-stream";
+            }
         }
 
         // DELETE api/Document/5
