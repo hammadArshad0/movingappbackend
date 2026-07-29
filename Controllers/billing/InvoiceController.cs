@@ -316,6 +316,7 @@ namespace task_full_stack.Controllers.billing
         }
 
         // POST api/Refund
+        // POST api/Refund
         [HttpPost]
         [Route("api/Refund")]
         public IHttpActionResult Create([FromBody] RefundDto model)
@@ -344,7 +345,9 @@ namespace task_full_stack.Controllers.billing
                 db.Refunds.Add(refund);
                 db.SaveChanges();
 
-                // Invoice status ko wapis "Partially Paid" ya "Unpaid" reflect karwao
+                string newStatus = null;
+                decimal? newOutstanding = null;
+
                 var invoice = db.Invoices.FirstOrDefault(i => i.Id == payment.InvoiceId);
                 if (invoice != null)
                 {
@@ -358,9 +361,19 @@ namespace task_full_stack.Controllers.billing
 
                     invoice.Status = netPaid >= invoice.Amount ? "Paid" : (netPaid > 0 ? "Partially Paid" : "Unpaid");
                     db.SaveChanges();
+
+                    newStatus = invoice.Status;
+                    newOutstanding = invoice.Amount - netPaid;
                 }
 
-                return Ok(new { message = "Refund processed successfully.", id = refund.Id });
+                return Ok(new
+                {
+                    message = "Refund processed successfully.",
+                    id = refund.Id,
+                    invoiceId = payment.InvoiceId,
+                    invoiceStatus = newStatus,
+                    outstandingBalance = newOutstanding
+                });
             }
             catch (Exception ex)
             {
@@ -368,8 +381,7 @@ namespace task_full_stack.Controllers.billing
             }
         }
     }
-
-    public class InvoiceDto
+        public class InvoiceDto
     {
         public int MoveId { get; set; }
         public decimal Amount { get; set; }
